@@ -1,9 +1,21 @@
-name: Test Workflow
+name: Deploy Website to IPFS via Pinata
 
-on: [push]
+on:
+  push:
+    branches:
+      - main 
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "The workflow is running!"
+    - uses: actions/checkout@v2
+    - name: Deploy to IPFS
+      uses: anantaramdas/ipfs-pinata-deploy-action@v1.6.4
+      with:
+        pin-name: 'My personal test site'
+        path: './'
+        pinata-api-key: ${{ secrets.PINATA_API_KEY }}
+        pinata-secret-api-key: ${{ secrets.PINATA_SECRET_API_KEY }}
+        verbose: true
+        remove-old: false
